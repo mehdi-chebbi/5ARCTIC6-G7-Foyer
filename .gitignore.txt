@@ -1,0 +1,32 @@
+# Ignore target directory
+/target
+
+# Ignore IDE and editor config files
+/.idea/
+/*.iml
+/.project
+/.classpath
+/.settings/
+/*.log
+
+# Ignore Maven and Gradle specific files
+/.mvn
+!.mvn/wrapper/maven-wrapper.jar
+**/mvnw
+**/mvnw.cmd
+.gradle
+build/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore test result files
+/test-output/
+/test-results/
+*.class
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.swo
