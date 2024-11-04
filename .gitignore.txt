@@ -1,5 +1,6 @@
 # Ignore target directory
 /target
+/tagret/*
 
 # Ignore IDE and editor config files
 /.idea/
