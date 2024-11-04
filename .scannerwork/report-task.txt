@@ -1,0 +1,6 @@
+projectKey=tn.esprit.spring.Foyer_Application
+serverUrl=http://localhost:9000
+serverVersion=10.6.0.92116
+dashboardUrl=http://localhost:9000/dashboard?id=tn.esprit.spring.Foyer_Application
+ceTaskId=b5a93712-f089-4e87-a7c6-bfa0fd935796
+ceTaskUrl=http://localhost:9000/api/ce/task?id=b5a93712-f089-4e87-a7c6-bfa0fd935796
