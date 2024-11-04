@@ -1,0 +1,6 @@
+projectKey=foyer-spring
+serverUrl=http://192.168.127.128:9000
+serverVersion=10.6.0.92116
+dashboardUrl=http://192.168.127.128:9000/dashboard?id=foyer-spring
+ceTaskId=e5dd6927-396b-475c-b8f2-16d04f1eb08f
+ceTaskUrl=http://192.168.127.128:9000/api/ce/task?id=e5dd6927-396b-475c-b8f2-16d04f1eb08f
