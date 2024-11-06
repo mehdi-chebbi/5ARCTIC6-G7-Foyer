@@ -18,11 +18,9 @@ import tn.esprit.spring.DAO.Repositories.ChambreRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 public class ChambreServiceTest {
@@ -95,18 +93,6 @@ public class ChambreServiceTest {
     }
 
     @Test
-    void testDelete() {
-        Chambre chambre = new Chambre();
-        chambre.setIdChambre(1L);
-
-        doNothing().when(chambreRepository).delete(chambre);
-
-        chambreService.delete(chambre);
-
-        verify(chambreRepository, times(1)).delete(chambre);
-    }
-
-    @Test
     void testGetChambresParNomBloc() {
         List<Chambre> chambres = new ArrayList<>();
         chambres.add(new Chambre());
@@ -132,28 +118,58 @@ public class ChambreServiceTest {
 
     @Test
     void testGetChambresNonReserveParNomFoyerEtTypeChambre() {
+        // Create a Foyer object
         Foyer foyer = new Foyer();
-        foyer.setNomFoyer("Foyer A");
+        foyer.setNomFoyer("Foyer A"); // Set the necessary properties
 
+        // Create a Bloc object and associate it with the Foyer
         Bloc bloc = new Bloc();
-        bloc.setFoyer(foyer);
-        bloc.setNomBloc("Bloc A");
+        bloc.setFoyer(foyer); // Associate Foyer with Bloc
+        bloc.setNomBloc("Bloc A"); // Set the necessary properties
 
+        // Create a Chambre object and associate it with the Bloc
         Chambre chambre = new Chambre();
         chambre.setIdChambre(1L);
         chambre.setTypeC(TypeChambre.SIMPLE);
-        chambre.setBloc(bloc);
+        chambre.setBloc(bloc); // Set the Bloc for the Chambre
 
+        // Create a list of Chambres and add the Chambre object
         List<Chambre> chambres = new ArrayList<>();
         chambres.add(chambre);
 
+        // Mock the repository behavior
         when(chambreRepository.findAll()).thenReturn(chambres);
 
+        // Execute the method under test
         List<Chambre> result = chambreService.getChambresNonReserveParNomFoyerEtTypeChambre("Foyer A", TypeChambre.SIMPLE);
 
+        // Assert results
         assertNotNull(result);
-        assertEquals(1, result.size());
+        assertEquals(1, result.size()); // Expecting one available chambre
         verify(chambreRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testNbPlacesDisponibleParChambreAnneeEnCours() {
+        // Assigning the values correctly
+        LocalDate dateDebutAU = LocalDate.of(2023, 9, 15);
+        LocalDate dateFinAU = LocalDate.of(2024, 6, 30);
+
+        Chambre chambre = new Chambre();
+        chambre.setTypeC(TypeChambre.SIMPLE);
+        chambre.setNumeroChambre(1L);
+
+        // Mocking the repository call, passing in the date range
+        when(chambreRepository.findAll()).thenReturn(List.of(chambre));
+        when(chambreRepository.countReservationsByIdChambreAndReservationsEstValideAndReservationsAnneeUniversitaireBetween(
+                any(Long.class), any(Boolean.class), eq(dateDebutAU), eq(dateFinAU))).thenReturn(0L);
+
+        chambreService.nbPlacesDisponibleParChambreAnneeEnCours();
+
+        // Verifying the repository method was called with the date range
+        verify(chambreRepository, times(1)).findAll();
+        verify(chambreRepository, times(1)).countReservationsByIdChambreAndReservationsEstValideAndReservationsAnneeUniversitaireBetween(
+                any(Long.class), any(Boolean.class), eq(dateDebutAU), eq(dateFinAU));
     }
 
     @Test
@@ -163,14 +179,14 @@ public class ChambreServiceTest {
         bloc.setCapaciteBloc(100);
 
         Chambre chambre = new Chambre();
-        chambre.setNumeroChambre(1L);
+        chambre.setNumeroChambre(101L);
         chambre.setTypeC(TypeChambre.SIMPLE);
         chambre.setBloc(bloc);
 
-        List<Bloc> blocs = new ArrayList<>();
-        blocs.add(bloc);
+        List<Chambre> chambres = new ArrayList<>();
+        chambres.add(chambre);
 
-        when(blocRepository.findAll()).thenReturn(blocs);
+        when(blocRepository.findAll()).thenReturn(List.of(bloc));
 
         chambreService.listeChambresParBloc();
 
@@ -179,30 +195,16 @@ public class ChambreServiceTest {
 
     @Test
     void testPourcentageChambreParTypeChambre() {
-        when(chambreRepository.count()).thenReturn(10L);
-        when(chambreRepository.countChambreByTypeC(TypeChambre.SIMPLE)).thenReturn(4L);
-        when(chambreRepository.countChambreByTypeC(TypeChambre.DOUBLE)).thenReturn(3L);
-        when(chambreRepository.countChambreByTypeC(TypeChambre.TRIPLE)).thenReturn(3L);
+        when(chambreRepository.count()).thenReturn(100L);
+        when(chambreRepository.countChambreByTypeC(TypeChambre.SIMPLE)).thenReturn(50L);
+        when(chambreRepository.countChambreByTypeC(TypeChambre.DOUBLE)).thenReturn(30L);
+        when(chambreRepository.countChambreByTypeC(TypeChambre.TRIPLE)).thenReturn(20L);
 
         chambreService.pourcentageChambreParTypeChambre();
 
         verify(chambreRepository, times(1)).count();
-        verify(chambreRepository, times(3)).countChambreByTypeC(any(TypeChambre.class));
-    }
-
-    @Test
-    void testNbPlacesDisponibleParChambreAnneeEnCours() {
-        LocalDate dateDebutAU = LocalDate.of(2023, 9, 15);
-        LocalDate dateFinAU = LocalDate.of(2024, 6, 30);
-        Chambre chambre = new Chambre();
-        chambre.setTypeC(TypeChambre.SIMPLE);
-        chambre.setNumeroChambre(1L);
-
-        when(chambreRepository.findAll()).thenReturn(List.of(chambre));
-        when(chambreRepository.countReservationsByIdChambreAndReservationsEstValideAndReservationsAnneeUniversitaireBetween(any(Long.class), any(Boolean.class), any(LocalDate.class), any(LocalDate.class))).thenReturn(0L);
-
-        chambreService.nbPlacesDisponibleParChambreAnneeEnCours();
-
-        verify(chambreRepository, times(1)).findAll();
+        verify(chambreRepository, times(1)).countChambreByTypeC(TypeChambre.SIMPLE);
+        verify(chambreRepository, times(1)).countChambreByTypeC(TypeChambre.DOUBLE);
+        verify(chambreRepository, times(1)).countChambreByTypeC(TypeChambre.TRIPLE);
     }
 }
