@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import tn.esprit.spring.DAO.Entities.Etudiant;
 import tn.esprit.spring.DAO.Repositories.EtudiantRepository;
-import tn.esprit.spring.Services.Etudiant.EtudiantService;
+import tn.esprit.spring.Services.etudiant.EtudiantService;
 
 import java.util.ArrayList;
 import java.util.List;
