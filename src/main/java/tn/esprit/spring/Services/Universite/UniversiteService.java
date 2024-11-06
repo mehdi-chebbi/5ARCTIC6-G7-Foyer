@@ -25,9 +25,10 @@ public class UniversiteService implements IUniversiteService {
     }
 
     @Override
-    public Universite findById(long id) {
-        return repo.findById(id).get();
-    }
+public Universite findById(long id) {
+    return repo.findById(id).orElse(null);
+}
+
 
     @Override
     public void deleteById(long id) {
