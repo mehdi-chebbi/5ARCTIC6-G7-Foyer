@@ -10,26 +10,26 @@
     </parent>
     <groupId>tn.esprit.spring</groupId>
     <artifactId>Foyer</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>Foyer</name>
     <description>Foyer</description>
     <properties>
         <java.version>17</java.version>
     </properties>
     <dependencies>
-    <dependency>
-    <groupId>org.junit.jupiter</groupId>
-    <artifactId>junit-jupiter-api</artifactId>
-    <version>5.9.3</version> <!-- Use a valid version -->
-    <scope>test</scope>
-</dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.9.3</version> <!-- Use a valid version -->
+            <scope>test</scope>
+        </dependency>
 
-<dependency>
-    <groupId>org.mockito</groupId>
-    <artifactId>mockito-core</artifactId>
-    <version>4.11.0</version> <!-- Use a valid version -->
-    <scope>test</scope>
-</dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.11.0</version> <!-- Use a valid version -->
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -63,7 +63,7 @@
 
     <build>
         <plugins>
-        <plugin>
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.11</version>
@@ -81,7 +81,7 @@
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
-                    <execution>g
+                    <execution>
                         <id>jacoco-site</id>
                         <phase>package</phase>
                         <goals>
@@ -104,5 +104,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
