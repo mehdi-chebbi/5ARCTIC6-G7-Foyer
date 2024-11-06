@@ -38,4 +38,4 @@ spec:
       targetPort: 3306
   selector:
     app: mysql
-  clusterIP: 10.10.10.10  # Creates a headless service, allowing direct pod access if needed
+  clusterIP: 10.96.100.150  # Creates a headless service, allowing direct pod access if needed
